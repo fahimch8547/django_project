@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo App</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 0; }
+        .container { max-width: 700px; margin: 60px auto; background: white; padding: 30px; border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; }
+        form { margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; }
+        button { padding: 10px 20px; border: none; background: #007bff; color: white; border-radius: 6px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .task { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; }
+        .actions { margin-top: 10px; }
+        .actions a { margin-right: 10px; text-decoration: none; color: #007bff; }
+        .actions a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Todo List</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="Task title" required>
+            <textarea name="description" placeholder="Task description (optional)"></textarea>
+            <button type="submit">Add Task</button>
+        </form>
+
+        {% for task in tasks %}
+            <div class="task">
+                <h3>{{ task.title }}</h3>
+                <p>{{ task.description }}</p>
+                <small>Created at: {{ task.created_at|date:"Y-m-d H:i" }}</small>
+                <div class="actions">
+                    <a href="{% url 'edit_task' task.id %}">Edit</a>
+                    <a href="{% url 'delete_task' task.id %}">Delete</a>
+                </div>
+            </div>
+       
+        {% endfor %}
+    </div>
+</body>
+</html>
